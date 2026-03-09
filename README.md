@@ -57,3 +57,51 @@ ReDoc: http://localhost:8000/redoc
 
 - `GET /links/expired` - История удаленных ссылок (только авторизованные)
 short_code>
+
+## Пример использования
+
+1. Зарегистрируйтесь:
+```bash
+curl -X POST http://localhost:8000/auth/register -H "Content-Type: application/json" -d '{"username":"testuser","password":"testpass"}'
+```
+
+2. Создайте ссылку (без авторизации):
+```bash
+curl -X POST http://localhost:8000/links/shorten -H "Content-Type: application/json" -d '{"original_url":"https://google.com"}'
+```
+
+Или с авторизацией (для привязки к аккаунту):
+```bash
+curl -X POST http://localhost:8000/links/shorten -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"original_url":"https://google.com"}'
+```
+
+3. Перейдите по ссылке:
+```bash
+curl http://localhost:8000/links/<short_code>
+```
+
+## Описание БД
+
+**users** - пользователи
+- `id` - уникальный идентификатор
+- `username` - имя пользователя
+- `hashed_password` - хешированный пароль
+
+**links** - активные ссылки
+- `id` - уникальный идентификатор
+- `short_code` - короткий код
+- `original_url` - оригинальный URL
+- `user_id` - владелец ссылки (может быть NULL для анонимных)
+- `created_at` - дата создания
+- `expires_at` - дата истечения
+- `last_accessed_at` - дата последнего перехода
+- `access_count` - количество переходов
+
+**expired_links** - удаленные ссылки
+- `id` - уникальный идентификатор
+- `short_code` - короткий код
+- `original_url` - оригинальный URL
+- `user_id` - владелец ссылки
+- `created_at` - дата создания
+- `expired_at` - дата удаления
+- `deletion_reason` - причина удаления (expired, unused, manual)
