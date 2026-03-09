@@ -24,8 +24,13 @@ services:
   - type: pserv
     name: link-shortener-db
     plan: free
-    databaseName: linkdb
-    user: user
+    envVars:
+      - key: POSTGRES_USER
+        value: user
+      - key: POSTGRES_DB
+        value: linkdb
+      - key: POSTGRES_PASSWORD
+        generateValue: true
 
   - type: redis
     name: link-shortener-redis
