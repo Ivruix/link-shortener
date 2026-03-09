@@ -21,18 +21,15 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "30"
 
-  - type: pserv
+  - type: postgres
     name: link-shortener-db
     plan: free
-    envVars:
-      - key: POSTGRES_USER
-        value: user
-      - key: POSTGRES_DB
-        value: linkdb
-      - key: POSTGRES_PASSWORD
-        generateValue: true
+    database: linkdb
+    user: user
+    ipAllowList: []
 
   - type: redis
     name: link-shortener-redis
     plan: free
+    ipAllowList: []
     maxmemoryPolicy: allkeys-lru
