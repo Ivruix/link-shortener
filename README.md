@@ -57,4 +57,3 @@ ReDoc: http://localhost:8000/redoc
 
 - `GET /links/expired` - История удаленных ссылок (только авторизованные)
 short_code>
-```
