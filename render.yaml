@@ -6,7 +6,8 @@ services:
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
+        fromService:
+          type: pserv
           name: link-shortener-db
           property: connectionString
       - key: REDIS_URL
@@ -21,15 +22,23 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "30"
 
-  - type: postgres
+  - type: pserv
     name: link-shortener-db
     plan: free
-    database: linkdb
-    user: user
-    ipAllowList: []
+    envVars:
+      - key: POSTGRES_USER
+        value: user
+      - key: POSTGRES_DB
+        value: linkdb
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+    disk:
+      name: data
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 1
 
   - type: redis
     name: link-shortener-redis
     plan: free
-    ipAllowList: []
     maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
