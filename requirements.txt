@@ -9,3 +9,7 @@ python-multipart
 pydantic
 pydantic-settings
 apscheduler
+pytest
+pytest-cov
+locust
+fakeredis

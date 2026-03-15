@@ -26,6 +26,36 @@ Swagger UI: http://localhost:8000/docs
 
 ReDoc: http://localhost:8000/redoc
 
+## Тестирование
+
+### Покрытие тестами
+
+Текущее покрытие кода тестами: `90%`
+
+Отчет pytest: `htmlcov/index.html`
+
+Отчет locust: `locust-report.html`
+
+### Запуск тестов
+
+```bash
+# Запустить все тесты (с покрытием и html отчетом)
+pytest
+```
+
+### Запуск нагрузочных тестов
+
+```bash
+# Запустить сервисы
+docker-compose up -d
+
+# Запустить нагрузочное тестирование
+locust -f tests/load/locustfile.py --headless --users 30 --spawn-rate 2 --run-time 1m --host http://localhost:8000 --html locust-report.html
+
+# Остановить сервисы после тестирования
+docker-compose down
+```
+
 ## Описание API
 
 ### Авторизация
